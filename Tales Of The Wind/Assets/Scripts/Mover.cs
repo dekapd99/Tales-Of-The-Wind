@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;
+using UnityEngine.AI; //bagian dari Nav Mesh Agent = AI
 
 public class Mover : MonoBehaviour
 {
@@ -14,15 +14,27 @@ public class Mover : MonoBehaviour
         
     }
 
+
     // Update is called once per frame
     void Update()
     {
         if(Input.GetMouseButtonDown(0))
         {
-            lastRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+            MoveToCursor(); //method movetocursor
         }
-        Debug.DrawRay(lastRay.origin, lastRay.direction * 100);
+        // Debug.DrawRay(lastRay.origin, lastRay.direction * 100);
+        // lastRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+        // GetComponent<NavMeshAgent>().destination = target.position;
+    }
 
-        GetComponent<NavMeshAgent>().destination = target.position;
+    private void MoveToCursor()
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+        bool hasHit = Physics.Raycast(ray, out hit); //nembak Ray, dapet posisi lalu di store di Hit lalu di passing keluar ke kurusor yang baru
+        if (hasHit)
+        {
+            GetComponent<NavMeshAgent>().destination = hit.point; //kalo cursor udh kita klik ke plan, si agent nergerak ke titik/point baru tersebut
+        }
     }
 }

@@ -38,7 +38,8 @@ namespace RPG.Combat
             if(!GetIsInRange())   
             {
                 //maka player ke posisi dari target
-                GetComponent<Mover>().MoveTo(target.transform.position);
+                ////passing 1f yang berarti lakukan max movement
+                GetComponent<Mover>().MoveTo(target.transform.position, 1f);
             }
             else
             {

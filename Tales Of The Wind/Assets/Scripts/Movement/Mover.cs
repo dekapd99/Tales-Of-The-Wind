@@ -9,6 +9,8 @@ namespace RPG.Movement
     public class Mover : MonoBehaviour, IAction
     {
         [SerializeField] Transform target;
+        //custom max speed
+        [SerializeField] float maxSpeed = 6f;
         //private variable navmeshagent
         NavMeshAgent navMeshAgent;
         //cache reference untuk health
@@ -29,19 +31,21 @@ namespace RPG.Movement
             // method update animator
             UpdateAnimator();
         }
-
-        public void StartMoveAction(Vector3 destination)
+        //passing in speedFraction ke parameter
+        public void StartMoveAction(Vector3 destination, float speedFraction)
         {
             GetComponent<ActionScheduler>().StartAction(this);
             //canceling fighting sebelum kita starting moving
-
-            MoveTo(destination);
+            
+            MoveTo(destination, speedFraction);
         }
 
-        public void MoveTo(Vector3 destination)
+        public void MoveTo(Vector3 destination, float speedFraction)
         {
             //kalo cursor udh kita klik ke plane, si agent nergerak ke destination baru tersebut
             navMeshAgent.destination = destination;
+            //Mathf.Clamp01() --> berapapun nilai value diantara 0-1 
+            navMeshAgent.speed = maxSpeed * Mathf.Clamp01(speedFraction);
             //terjadi ketika kursor tidak mendekati lawan maka player terus bergerak
             navMeshAgent.isStopped = false;
         }

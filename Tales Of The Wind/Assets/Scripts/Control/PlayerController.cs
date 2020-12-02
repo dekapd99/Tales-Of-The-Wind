@@ -75,7 +75,8 @@ namespace RPG.Control
                 if(Input.GetMouseButton(0))
                 {
                     //memanggil method StartMoveAction nanti akan dilanjutkan ke MoveTo dari script mover
-                    GetComponent<Mover>().StartMoveAction(hit.point);
+                    //passing 1f yang berarti lakukan max movement
+                    GetComponent<Mover>().StartMoveAction(hit.point, 1f);
                 }
                 //jika berinteraksi pada area yang bisa movement
                 return true;

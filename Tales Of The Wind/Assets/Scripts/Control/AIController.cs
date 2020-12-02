@@ -20,6 +20,10 @@ namespace RPG.Control
         [SerializeField] float waypointTolerance = 1f;
         //dwelltime digunakan agar setiap enemy nyampe di waypointnya dia akan diam dulu melihat sekitar
         [SerializeField] float waypointDwellTime = 3f;
+        //memproteksi patrol fraction agar valuenya 0-1
+        [Range(0,1)]
+        //speed enemy patrol: fraction --> bagian terkecil/persenan dari maxSpeed yang akan digunakan sesuai kebutuhan
+        [SerializeField] float patrolSpeedFraction = 0.2f;
         //cache reference dari figther
         Fighter fighter;
         //cache reference untuk Health component
@@ -106,7 +110,8 @@ namespace RPG.Control
             {
                 //untuk canceling enemy chase apabila diluar range
                 //startmoveaction akan cancel secara otomatis ketika tidak ada targetnya dia akan patroli ke nextPosition
-                mover.StartMoveAction(nextPosition);
+                //sekarang kita passing in patrolSpeedFraction untuk kecepatan enemy jalan
+                mover.StartMoveAction(nextPosition, patrolSpeedFraction);
             }
             
         }

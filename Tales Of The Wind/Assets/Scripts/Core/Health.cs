@@ -1,15 +1,16 @@
 using UnityEngine;
+using RPG.Saving;
 
 namespace RPG.Core
 {
-    public class Health : MonoBehaviour 
+    public class Health : MonoBehaviour, ISaveable
     {
         //serializefield disini digunakan untuk mengaktifkan konfigurasi 
         [SerializeField] float healthPoints = 100f;
         
         //ini bool buat assign variabel apakah enemy udah mati/belum --> disini artinya FALSE = belum mati
         bool isDead = false;
-        
+
         //ini simple class untuk mengetahui apakah enemy udah mati atau belum?
         public bool IsDead()
         {
@@ -42,6 +43,24 @@ namespace RPG.Core
             GetComponent<Animator>().SetTrigger("die");
             //untuk memberitahu ke actionscheduler agar cancel StartAction untuk memberhentikan enemy/player yang sudah mati
             GetComponent<ActionScheduler>().CancelCurrentAction();
+        }
+
+        public object CaptureState()
+        {
+            return healthPoints;
+        }
+
+        public void RestoreState(object state)
+        {
+            //casting state menjadi float terus taroh ke healthpoints
+            healthPoints = (float)state;
+            //FIXING BUG: saat kita membunuh enemy kemudian melakukan save, dan stop play
+            //nanti pas kita play lagi terus pencet L nanti enemy yang udah mati hidup lagi
+            if (healthPoints == 0)
+            {
+                //method die
+                Die();
+            }
         }
     }
 }

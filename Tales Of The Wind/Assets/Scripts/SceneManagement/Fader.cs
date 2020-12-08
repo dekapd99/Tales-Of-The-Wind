@@ -7,9 +7,15 @@ namespace RPG.SceneManagement
     {
         CanvasGroup canvasGroup;
 
-        private void Start() 
+        private void Awake() 
         {
             canvasGroup = GetComponent<CanvasGroup>();
+        }
+        //method ini digunakan ketika melakukan load dimana pun secara otomatis ketika memencet play
+        //maka akan terjadi efek fadeout
+        public void fadeOutImmediate()
+        {
+            canvasGroup.alpha = 1;
         }
 
         //membuat waktu fadeout dengan coroutine

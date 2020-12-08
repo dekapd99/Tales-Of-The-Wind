@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI; //bagian dari Nav Mesh Agent = AI
 using RPG.Core;
+using RPG.Saving;
 
 namespace RPG.Movement
 {
-    public class Mover : MonoBehaviour, IAction
+    public class Mover : MonoBehaviour, IAction, ISaveable
     {
         [SerializeField] Transform target;
         //custom max speed
@@ -73,6 +74,33 @@ namespace RPG.Movement
             //variable speed digunakan untuk memberitahu animasi berapa velocity untuk animasi maju kedepan (sumbu z)
             float speed = localVelocity.z;
             GetComponent<Animator>().SetFloat("forwardSpeed", speed);
+        }
+
+        //kapanpun kita capture state maka akan di restore ke save file
+        public object CaptureState()
+        {
+            //untuk mengatifkan capture untuk dapat menangkap/storing berbagai macam parameter
+            Dictionary<string, object> data = new Dictionary<string, object>();
+            //storing posisi
+            //capture position dan save posisi tersebut 
+            data["position"] = new SerializableVector3(transform.position);
+            //capture position dan save rotasi tersebut 
+            data["rotation"] = new SerializableVector3(transform.eulerAngles);
+            return data;
+        }
+        //load system dimana posisi player yang sudah disave, player akan kembali kesana
+        public void RestoreState(object state)
+        {
+            //posisi yang sebelumnya akan melakukan load terhadap save yang sebelumnya
+            Dictionary<string, object> data = (Dictionary<string, object>)state; 
+            //melakukan disable terhadap NavMeshAgent agar tidak mengganggu proses save & load
+            GetComponent<NavMeshAgent>().enabled = false;
+            //mengembalikan posisi yang di load
+            transform.position = ((SerializableVector3)data["position"]).ToVector();
+            //mengembalikan rotasi player yang di load
+            transform.eulerAngles = ((SerializableVector3)data["rotation"]).ToVector();
+            // melakukan enable terhadap navmeshagent
+            GetComponent<NavMeshAgent>().enabled = true;
         }
     }
 }

@@ -41,17 +41,28 @@ namespace RPG.SceneManagement
                 yield break;
             }
 
-
             //sebelum scene load
             DontDestroyOnLoad(gameObject);
             Fader fader = FindObjectOfType<Fader>();
             //loading fadeout
             yield return fader.FadeOut(fadeOutTime);
+
+            //save current level agar bisa melakukan save diantara scene
+            //reloading level
+            SavingWrapper wrapper = FindObjectOfType<SavingWrapper>();
+            wrapper.Save();
+
             //load scene yang di tuju dan anak memanggil coroutine yang sama jika scenenya sudah selesai loading
             yield return SceneManager.LoadSceneAsync(sceneToLoad);
+
+            //load current level agar bisa melakukan load diantara scene
+            wrapper.Load();
+
             //sambungin sama portal yang lain dan melakukan update terhadap informasi player seperti lokasi/posisi
             Portal otherPortal = GetOtherPortal();
             UpdatePlayer(otherPortal);
+
+            wrapper.Save();
 
             //untuk menunggu camera stabil
             yield return new WaitForSeconds(fadeWaitTime);
@@ -64,6 +75,8 @@ namespace RPG.SceneManagement
         private void UpdatePlayer(Portal otherPortal)
         {
             GameObject player = GameObject.FindWithTag("Player");
+            //disable navmeshagent
+            player.GetComponent<NavMeshAgent>().enabled = false; 
             //fixing bug ketika pergi ke portal terjadi conflic postion antara NavMeshAgent
             //dengan spawnPoint
             player.GetComponent<NavMeshAgent>().Warp(otherPortal.spawnPoint.position);

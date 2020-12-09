@@ -43,6 +43,7 @@ MonoBehaviour:
   patrolPath: {fileID: 0}
   waypointTolerance: 1
   waypointDwellTime: 3
+  patrolSpeedFraction: 0.2
 --- !u!1001 &876008142245205921
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -100,6 +101,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 30cf93deff988e74e88a144bd2127c18, type: 3}
+--- !u!4 &876008142245675181 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 481036, guid: 30cf93deff988e74e88a144bd2127c18, type: 3}
+  m_PrefabInstance: {fileID: 876008142245205921}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &876008142245617839 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 423694, guid: 30cf93deff988e74e88a144bd2127c18, type: 3}
+  m_PrefabInstance: {fileID: 876008142245205921}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &5923278325635557446
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -123,6 +134,26 @@ PrefabInstance:
       propertyPath: weaponDamage
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 1452226336221165005, guid: 6f2276a5c80da224a8eaf9db42bd702f, type: 3}
+      propertyPath: weapon
+      value: 
+      objectReference: {fileID: 11400000, guid: 036ad57d67e62cc4faca1a02b326344a, type: 2}
+    - target: {fileID: 1452226336221165005, guid: 6f2276a5c80da224a8eaf9db42bd702f, type: 3}
+      propertyPath: handTransform
+      value: 
+      objectReference: {fileID: 876008142245617839}
+    - target: {fileID: 1452226336221165005, guid: 6f2276a5c80da224a8eaf9db42bd702f, type: 3}
+      propertyPath: defaultWeapon
+      value: 
+      objectReference: {fileID: 11400000, guid: 036ad57d67e62cc4faca1a02b326344a, type: 2}
+    - target: {fileID: 1452226336221165005, guid: 6f2276a5c80da224a8eaf9db42bd702f, type: 3}
+      propertyPath: leftHandTransform
+      value: 
+      objectReference: {fileID: 876008142245675181}
+    - target: {fileID: 1452226336221165005, guid: 6f2276a5c80da224a8eaf9db42bd702f, type: 3}
+      propertyPath: rightHandTransform
+      value: 
+      objectReference: {fileID: 876008142245617839}
     - target: {fileID: 2680936343506302536, guid: 6f2276a5c80da224a8eaf9db42bd702f, type: 3}
       propertyPath: m_Name
       value: Enemy
@@ -169,6 +200,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2680936343506302540, guid: 6f2276a5c80da224a8eaf9db42bd702f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3693496716596277969, guid: 6f2276a5c80da224a8eaf9db42bd702f, type: 3}
+      propertyPath: m_UseGravity
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

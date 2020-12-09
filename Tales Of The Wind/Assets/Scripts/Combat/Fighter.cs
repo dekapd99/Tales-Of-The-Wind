@@ -1,17 +1,22 @@
 using UnityEngine;
 using RPG.Movement;
 using RPG.Core;
+using System;
+using RPG.Saving;
 
 namespace RPG.Combat
 {
-    public class Fighter : MonoBehaviour, IAction 
+    public class Fighter : MonoBehaviour, IAction, ISaveable
     {
-        //dummy weapon range (2f = ibarat 2meter/2frame)
-        [SerializeField] float weaponRange = 2f;
         //timeBetweenAttacks memberikan delay kepada SetTrigger sebelum melakukan attack lagi (1f = ibarat 1 detik)
         [SerializeField] float timeBetweenAttacks = 1f; 
-        //weaponDamage memberikan damage kepada enemy sebanyak 5 setiap attacknya
-        [SerializeField] float weaponDamage = 5f; 
+        //untuk senjata tarohnya di tangan mana kanan dan didefine tidak ada
+        [SerializeField] Transform rightHandTransform = null;
+        //untuk senjata tarohnya di tangan mana kiri dan didefine tidak ada
+        [SerializeField] Transform leftHandTransform = null;
+        //untuk jenis senjata apa yang harus mengikuti scriptable objectnya masing-masing
+        [SerializeField] Weapon defaultWeapon = null;
+
         
         //semua enemy mempunyai darah termasuk player untuk memudahkan pemanggilan yang spesifik
         //semakin spesifik variablenya maka semakin spesifik juga melakukan ekstraksi nilai komponennya
@@ -22,6 +27,18 @@ namespace RPG.Combat
         //kenapa infinity karena pada if(timeSinceLastAttack > timeBetweenAttacks) akan menghasilkan return true
         //sehingga kedua object bisa menyerang disaat yang bersamaan
         float timeSinceLastAttack = Mathf.Infinity;
+        //tidak punya senjata
+        Weapon currentWeapon = null;
+
+        private void Start() 
+        {
+            //ketika senjata yang sekarang tidak ada maka pasang defaultweapon
+            if(currentWeapon == null)
+            {
+                //saat start disini kita passing defaultWeapon (tidak ada/unarmed)
+                EquipWeapon(defaultWeapon);
+            }
+        }
 
         private void Update() 
         {
@@ -49,6 +66,16 @@ namespace RPG.Combat
                 //method animasi attackbehaviour
                 AttackBehaviour();
             }
+        }
+        //membantu pickup weapon
+        public void EquipWeapon(Weapon weapon)
+        {
+            //senjata saat ini
+            currentWeapon = weapon;
+            //update animasi ketika memiliki senjata
+            Animator animator = GetComponent<Animator>();
+            //dimana senjata akan dipegang dan animasi apa yang cocok untuk senjata itu
+            weapon.Spawn(rightHandTransform, leftHandTransform, animator);
         }
 
         private void AttackBehaviour()
@@ -78,7 +105,8 @@ namespace RPG.Combat
             GetComponent<Animator>().SetTrigger("attack");
             //reset time sejak attack sebelumnya
         }
-
+        //Hit disini merupakan animasi pada Attack --> Animation By Explosive --> Animation Panel
+        //Hit merupakan penyebutan dari asset packnys
         //animation event untuk taking damage
         //taking damage ditaroh disini karena kalau ditaroh di AttackBehaviour(), damage langsung diterima sebelum enemy diserang
         void Hit()
@@ -88,15 +116,31 @@ namespace RPG.Combat
             {
                 return;
             }
-            //saat enemy taking damage
-            target.TakeDamage(weaponDamage);
+            //ini ngasih tau kalo senjata yang digunakan sekarang punya projectile atau tidak
+            if(currentWeapon.HasProjectile())
+            {
+                //TRUE --> kalo punya lempar projectilenya ke target    
+                currentWeapon.LaunchProjectile(rightHandTransform, leftHandTransform, target);
+            }
+            else
+            {
+                //saat enemy taking damage
+                target.TakeDamage(currentWeapon.GetDamage());
+            }
+        }
+
+        //Shoot disini merupakan animasi pada Bow --> Animation By Explosive --> Animation Panel
+        //Shoot merupakan penyebutan dari asset packnys
+        void Shoot()
+        {
+            Hit();
         }
 
         private bool GetIsInRange()
         {
             //isInRange jika target ada didalam range serangan weaponRange
             //transform.position adalah posisi player
-            return Vector3.Distance(transform.position, target.transform.position) < weaponRange;
+            return Vector3.Distance(transform.position, target.transform.position) < currentWeapon.GetRange();
         }
 
         //fixing bug dimana capsule collider enemy yang sudah mati menghalangi raycast
@@ -139,6 +183,22 @@ namespace RPG.Combat
             //fixing bug
             //cancelling attack animation ketika pergi dari musuh
             GetComponent<Animator>().SetTrigger("stopAttack");
+        }
+
+        public object CaptureState()
+        {
+            //saving string ke capture state untuk save
+            return currentWeapon.name;
+        }
+
+        public void RestoreState(object state)
+        {
+            string weaponName = (string)state;
+            //saat load game maka senjata yang sudah disave akan ke load juga
+            //pasang weapon unarmed
+            Weapon weapon = Resources.Load<Weapon>(weaponName);
+            //equip senjata yang sudah diambil 
+            EquipWeapon(weapon);
         }
     }
 }

@@ -6276,6 +6276,10 @@ PrefabInstance:
       propertyPath: m_CameraDistance
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 6402003530463078827, guid: 1610d968ef25be14fa8ba7603cdfb37e, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7542363692832809090, guid: 1610d968ef25be14fa8ba7603cdfb37e, type: 3}
       propertyPath: m_LocalRotation.x
       value: -0.6820533

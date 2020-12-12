@@ -1,6 +1,6 @@
 ﻿//melakukan script terhadap object weapon
-using RPG.Core;
 using UnityEngine;
+using RPG.Resources;
 
 namespace RPG.Combat
 {
@@ -85,11 +85,11 @@ namespace RPG.Combat
             return projectile != null;
         }
         //method ini untuk melemparkan projectile bagi senjata yang punya projectile
-        public void LaunchProjectile(Transform rightHand, Transform leftHand, Health target)
+        public void LaunchProjectile(Transform rightHand, Transform leftHand, Health target, GameObject instigator)
         {
             Projectile projectileInstance = Instantiate(projectile, GetTransform(rightHand,leftHand).position, Quaternion.identity);
             //ini ngasih tau ke projectile ini targetnya dan kejar targetnya    
-            projectileInstance.SetTarget(target, weaponDamage);
+            projectileInstance.SetTarget(target, instigator, weaponDamage);
         }
 
         public float GetDamage()

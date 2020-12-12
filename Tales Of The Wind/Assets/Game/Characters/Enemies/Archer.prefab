@@ -11,13 +11,17 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 01b2546c969fe814794af634cb4534f4, type: 2}
+    - target: {fileID: 2856252428037889895, guid: 46c6392bce292974c8fd462762ea501e, type: 3}
+      propertyPath: characterClass
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 5049923219321707915, guid: 46c6392bce292974c8fd462762ea501e, type: 3}
       propertyPath: defaultWeapon
       value: 
       objectReference: {fileID: 11400000, guid: 25533d3fd5fdaff4a9fbf8ba756458c4, type: 2}
     - target: {fileID: 7742493689620567954, guid: 46c6392bce292974c8fd462762ea501e, type: 3}
       propertyPath: chaseDistance
-      value: 20
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 8576875861736136202, guid: 46c6392bce292974c8fd462762ea501e, type: 3}
       propertyPath: m_LocalPosition.x

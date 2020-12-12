@@ -1,7 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using RPG.Core;
-using UnityEngine;
+﻿using UnityEngine;
+using RPG.Resources;
 
 namespace RPG.Combat
 {
@@ -21,6 +19,8 @@ namespace RPG.Combat
         [SerializeField] float lifeAfterImpact = 2;
         //storing health dari si target
         Health target = null;
+        //ini untuk system exp untuk mengecek siapa yang akan mendapatkan exp tersebut
+        GameObject instigator = null;    
         float damage = 0;
         
         private void Start() 
@@ -46,12 +46,14 @@ namespace RPG.Combat
         }
 
         //passing ke instance variable Health diatas
-        public void SetTarget(Health target, float damage)
+        public void SetTarget(Health target, GameObject instigator, float damage)
         {
             //menunjuk pada gameobject ini yang akan diattack
             this.target = target;
             //menunjuk pada gameobject ini yang akan diterima damagenya dari projectile
             this.damage = damage;
+            //instigator untuk semua method settarget   
+            this.instigator = instigator;
             //projectile yang gak kena musuh akan dihapus ketika melewati maxtime
             Destroy(gameObject, maxLifeTime);
         }
@@ -76,7 +78,7 @@ namespace RPG.Combat
             if(other.GetComponent<Health>() != target) return;
             //kalau enemy sudah mati jangan tembak projectilenya lagi
             if(target.IsDead()) return;
-            target.TakeDamage(damage);
+            target.TakeDamage(instigator, damage);
             //agar panah sudah tidak ada kecepatannya setelah menambrak target
             speed = 0;
             //ketiak ada hiteffect maka munculkan hit efeknya pada target sasaran

@@ -1,8 +1,7 @@
 ﻿using UnityEngine;
 using RPG.Movement;
 using RPG.Combat;
-using RPG.Core;
-using System;
+using RPG.Resources;
 
 //namespace RPG.xxx karena kalau nanti kita akan mengimport sesuatu dengan nama control, maka 
 //file tidak akan konflik dengan Control
@@ -28,7 +27,7 @@ namespace RPG.Control
             //maka akan skip ke step selanjutnya -->interact with movement
             if (InteractWithCombat()) return;
             //method untuk hubungan interaksi kursor dengan movement
-            if (InteractWithMovement());
+            if (InteractWithMovement()) return;
         }
 
         private bool InteractWithCombat()

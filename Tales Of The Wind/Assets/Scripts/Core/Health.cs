@@ -1,23 +1,31 @@
 using UnityEngine;
 using RPG.Saving;
+using RPG.Stats;
+using RPG.Core;
+using System;
 
-namespace RPG.Core
+namespace RPG.Resources
 {
     public class Health : MonoBehaviour, ISaveable
     {
-        //serializefield disini digunakan untuk mengaktifkan konfigurasi 
+        //serializefield disini digunakan untuk mengaktifkan kon figurasi 
         [SerializeField] float healthPoints = 100f;
         
         //ini bool buat assign variabel apakah enemy udah mati/belum --> disini artinya FALSE = belum mati
         bool isDead = false;
 
+        private void Start() 
+        {
+            //ngambil health dari basestats method GetHealth
+            healthPoints = GetComponent<BaseStats>().GetStat(Stat.Health);    
+        }
         //ini simple class untuk mengetahui apakah enemy udah mati atau belum?
         public bool IsDead()
         {
             return isDead;
         }
 
-        public void TakeDamage(float damage)
+        public void TakeDamage(GameObject instigator, float damage)
         {
             //0 sebagai batasnya
             //fungsi matematika untuk menghitung dengan cara mengambil nilai max dari value ini
@@ -30,7 +38,14 @@ namespace RPG.Core
             {
                 //method die
                 Die();
+                AwardExperience(instigator);
             }
+        }
+
+        public float GetPercentage()
+        {
+            //healthPoint yang sekarang dibagi dengan health point base stats nanti hasilnya dapat persen
+            return 100 * (healthPoints / GetComponent<BaseStats>().GetStat(Stat.Health));
         }
 
         private void Die()
@@ -44,6 +59,16 @@ namespace RPG.Core
             //untuk memberitahu ke actionscheduler agar cancel StartAction untuk memberhentikan enemy/player yang sudah mati
             GetComponent<ActionScheduler>().CancelCurrentAction();
         }
+
+        private void AwardExperience(GameObject instigator)
+        {
+            //storing experience component
+            Experience experience = instigator.GetComponent<Experience>();
+            //kalau tidak ada exp maka return aja lanjutin ke line code berikutnya
+            if (experience == null) return;
+            experience.GainExperience(GetComponent<BaseStats>().GetStat(Stat.ExperienceReward));
+        }
+
 
         public object CaptureState()
         {

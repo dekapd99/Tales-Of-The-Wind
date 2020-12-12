@@ -1,8 +1,8 @@
 using UnityEngine;
 using RPG.Movement;
 using RPG.Core;
-using System;
 using RPG.Saving;
+using RPG.Resources;
 
 namespace RPG.Combat
 {
@@ -78,6 +78,11 @@ namespace RPG.Combat
             weapon.Spawn(rightHandTransform, leftHandTransform, animator);
         }
 
+        public Health GetTarget()
+        {
+            return target;
+        }
+
         private void AttackBehaviour()
         {
             //dokumentasi unity transform.LookAt
@@ -120,12 +125,12 @@ namespace RPG.Combat
             if(currentWeapon.HasProjectile())
             {
                 //TRUE --> kalo punya lempar projectilenya ke target    
-                currentWeapon.LaunchProjectile(rightHandTransform, leftHandTransform, target);
+                currentWeapon.LaunchProjectile(rightHandTransform, leftHandTransform, target, gameObject);
             }
             else
             {
                 //saat enemy taking damage
-                target.TakeDamage(currentWeapon.GetDamage());
+                target.TakeDamage(gameObject, currentWeapon.GetDamage());
             }
         }
 
@@ -196,7 +201,8 @@ namespace RPG.Combat
             string weaponName = (string)state;
             //saat load game maka senjata yang sudah disave akan ke load juga
             //pasang weapon unarmed
-            Weapon weapon = Resources.Load<Weapon>(weaponName);
+            //UnityEngine.Resources diberikan seperti ini untuk menghindari ambigu dengan mengarah ke namespace apabila dberikan nama Resources saja
+            Weapon weapon = UnityEngine.Resources.Load<Weapon>(weaponName);
             //equip senjata yang sudah diambil 
             EquipWeapon(weapon);
         }

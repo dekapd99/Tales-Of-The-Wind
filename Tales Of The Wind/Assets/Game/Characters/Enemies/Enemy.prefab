@@ -145,7 +145,7 @@ PrefabInstance:
     - target: {fileID: 1452226336221165005, guid: 6f2276a5c80da224a8eaf9db42bd702f, type: 3}
       propertyPath: defaultWeapon
       value: 
-      objectReference: {fileID: 11400000, guid: 036ad57d67e62cc4faca1a02b326344a, type: 2}
+      objectReference: {fileID: 11400000, guid: b407ce58f955d3e458d1f5f92095268b, type: 2}
     - target: {fileID: 1452226336221165005, guid: 6f2276a5c80da224a8eaf9db42bd702f, type: 3}
       propertyPath: leftHandTransform
       value: 
@@ -205,6 +205,18 @@ PrefabInstance:
     - target: {fileID: 3693496716596277969, guid: 6f2276a5c80da224a8eaf9db42bd702f, type: 3}
       propertyPath: m_UseGravity
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8471486619643066145, guid: 6f2276a5c80da224a8eaf9db42bd702f, type: 3}
+      propertyPath: progression
+      value: 
+      objectReference: {fileID: 11400000, guid: 3345bd6459803674db6bf3f5a928d089, type: 2}
+    - target: {fileID: 8471486619643066145, guid: 6f2276a5c80da224a8eaf9db42bd702f, type: 3}
+      propertyPath: characterClass
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8471486619643066145, guid: 6f2276a5c80da224a8eaf9db42bd702f, type: 3}
+      propertyPath: startingLevel
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6f2276a5c80da224a8eaf9db42bd702f, type: 3}

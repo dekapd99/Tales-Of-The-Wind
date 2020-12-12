@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.AI; //bagian dari Nav Mesh Agent = AI
 using RPG.Core;
 using RPG.Saving;
+using RPG.Resources;
 
 namespace RPG.Movement
 {
